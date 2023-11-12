@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diwali Wishes From GM</title>
+  <link rel="icon" type="image/x-icon" href="diw.jpg">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      height: 100vh;
+      background-image: repeating-linear-gradient(90deg, rgb(3, 3, 3) 0px, rgb(3, 3, 3) 18px, rgb(11, 11, 11) 18px, rgb(11, 11, 11) 36px, rgb(0, 0, 0) 36px, rgb(0, 0, 0) 54px, rgb(5, 5, 5) 54px, rgb(5, 5, 5) 72px, rgb(8, 8, 8) 72px, rgb(8, 8, 8) 90px, rgb(14, 14, 14) 90px, rgb(14, 14, 14) 108px, rgb(19, 19, 19) 108px, rgb(19, 19, 19) 126px, rgb(16, 16, 16) 126px, rgb(16, 16, 16) 144px);
+    }
+
+    #canvas {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #diwaliForm {
+      display: block;
+      border-radius: 10px;
+      width: 50% !important;
+      /* Set the width to 50% */
+      box-sizing: border-box;
+      position: relative;
+      /* Add this line */
+      z-index: 1;
+      /* Add this line */
+    }
+
+    #wishOutput {
+      display: none;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .bn13 {
+      display: inline-block;
+      padding: 0.5em 1.7em;
+      margin: 0 0.1em 0.1em 0;
+      border: 0.16em solid rgba(255, 255, 255, 0);
+      background-color: rgb(80, 10, 172);
+      border-radius: 2em;
+      box-sizing: border-box;
+      text-decoration: none;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+      color: #ffffff;
+      text-shadow: 0 0.04em 0.04em rgb(255, 255, 255);
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .bn13:hover {
+      border-color: rgb(255, 255, 255);
+      color: #ffffff;
+    }
+
+    @keyframes bn13bouncy {
+      0% {
+        top: 0em;
+      }
+
+      40% {
+        top: 0em;
+      }
+
+      43% {
+        top: -0.9em;
+      }
+
+      46% {
+        top: 0em;
+      }
+
+      48% {
+        top: -0.4em;
+      }
+
+      50% {
+        top: 0em;
+      }
+
+      100% {
+        top: 0em;
+      }
+    }
+
+    a.bn13:hover {
+      border-color: rgb(255, 255, 255);
+    }
+
+    .container {
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      text-align: left;
+      /* Adjust text alignment for label */
+    }
+
+    input {
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 8px;
+      margin: 10px 10px 10px 10px;
+    }
+
+    button {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    @keyframes sparkle {
+
+      0%,
+      100% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8);
+      }
+
+      50% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.8), 0 0 50px rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    #wishOutput.sparkle {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.8));
+      background-size: 200% 100%;
+      animation: sparkle 1s infinite;
+    }
+  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <form id="diwaliForm" class="container">
+    <label for="name">Enter your name: </label><br><br>
+    <input type="text" id="name" required><br><br>
+    <button type="button" onclick="makeWish()">
+      <a class="bn13">SEND</a>
+    </button>
+  </form>
+  <div id="wishOutput" class="mt-4"></div>
+
+  <div>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <script>
+
+    function makeWish() {
+      var name = document.getElementById('name').value;
+      var diwaliForm = document.getElementById('diwaliForm');
+      var wishOutput = document.getElementById('wishOutput');
+
+      if (name.trim() === "") {
+        alert("Please enter your name");
+      } else {
+        var wish = "Happy Diwali, " + name + " ! " + "From GM";
+        wishOutput.innerHTML = wish;
+
+        // Enhance the visual effects
+        wishOutput.style.fontSize = "56px"; // Change font size
+        wishOutput.style.fontFamily = "cursive"; // Change font family
+        wishOutput.style.animation = "sparkle 1s infinite"; // Add sparkle animation
+
+        // Hide the form and display the wish
+        diwaliForm.style.display = 'none';
+        wishOutput.style.display = 'block';
+      }
+    }
+    let canvas, ctx, w, h,
+      bubbles = [],
+      bubbleCount = 1000,
+      bubbleChance = 0.7,
+      hue = 0;
+    let mouse = {
+      x: undefined,
+      y: undefined
+    };
+
+    function init() {
+      canvas = document.querySelector("#canvas");
+      ctx = canvas.getContext("2d");
+
+      resizeReset();
+      arrayCleanup();
+      animationLoop();
+    }
+
+    function resizeReset() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    function mousemove(e) {
+      mouse.x = e.x;
+      mouse.y = e.y;
+    }
+
+    function mouseout() {
+      mouse.x = undefined;
+      mouse.y = undefined;
+    }
+
+    function animationLoop() {
+      if (bubbles.length < bubbleCount && Math.random() < bubbleChance) {
+        bubbles.push(new Bubble());
+        hue++;
+      }
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+
+      collisionDetect();
+      drawScene();
+      arrayCleanup();
+      requestAnimationFrame(animationLoop);
+    }
+
+    function drawScene() {
+      bubbles.map((bubble) => {
+        bubble.update();
+        bubble.draw();
+      });
+    }
+
+    function arrayCleanup() {
+      let dump = [];
+      bubbles.map((bubble) => {
+        if (!bubble.destroyed) {
+          dump.push(bubble);
+        }
+      });
+      bubbles = dump;
+    }
+
+    function getRandomInt(min, max) {
+      return Math.round(Math.random() * (max - min)) + min;
+    }
+
+    function easeOutQuad(x) {
+      return 1 - (1 - x) * (1 - x);
+    }
+
+    function easeInOutSine(x) {
+      return -(Math.cos(Math.PI * x) - 1) / 2;
+    }
+
+    class Bubble {
+      constructor() {
+        this.bottom = h - 20;
+        this.x = Math.random() * w;
+        this.y = this.bottom;
+        this.size = 0;
+        this.sizeMax = getRandomInt(10, 20);
+        this.targetY = this.sizeMax;
+        this.tick = 0;
+        this.burstedTick = 0;
+        this.sizeTick = 60;
+        this.moveTick = 180;
+        this.burstTick = 60;
+        this.bursted = false;
+        this.destroyed = false;
+        this.hue = hue;
+      }
+      draw() {
+        if (!this.bursted) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.shadowColor = `hsla(${this.hue}, 100%, 50%, 1)`;
+          ctx.shadowBlur = 10;
+          ctx.fillStyle = `hsla(${this.hue}, 100%, 50%, 0.3)`;
+          ctx.fill();
+          ctx.closePath();
+          ctx.restore();
+        } else {
+          ctx.beginPath();
+          for (let a = 0; a < 10; a++) {
+            let angle = 36 * a;
+            let radian = (Math.PI / 180) * angle;
+            let s = 10 + this.burstedTick * 1;
+            let e = 20 + this.burstedTick * 0.5;
+            ctx.moveTo(this.x + s * Math.sin(radian), this.y + s * Math.cos(radian));
+            ctx.lineTo(this.x + e * Math.sin(radian), this.y + e * Math.cos(radian));
+          }
+          ctx.strokeStyle = `hsla(${this.hue}, 100%, 50%, 1)`;
+          ctx.stroke();
+          ctx.closePath();
+        }
+      }
+      update() {
+        if (this.bursted) {
+          this.burstUpdate();
+        } else if (this.size < this.sizeMax) {
+          this.sizeUpdate();
+        } else if (this.y > this.targetY) {
+          this.moveUpdate();
+        } else if (this.tick === this.sizeTick + this.moveTick + this.burstTick) {
+          this.bursted = true;
+        }
+        this.tick++;
+      }
+      sizeUpdate() {
+        let progress = 1 - (this.sizeTick - this.tick) / this.sizeTick;
+        this.size = this.sizeMax * easeOutQuad(progress);
+      }
+      moveUpdate() {
+        let progress = 1 - (this.moveTick - (this.tick - this.sizeTick)) / this.moveTick;
+        this.y = this.bottom - (this.bottom - this.targetY) * easeInOutSine(progress);
+      }
+      burstUpdate() {
+        this.burstedTick++;
+        if (this.burstedTick > 15) {
+          this.destroyed = true;
+        }
+      }
+    }
+
+    function collisionDetect() {
+      bubbles.map((bubble) => {
+        let dx = bubble.x - mouse.x;
+        let dy = bubble.y - mouse.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < bubble.size + 20) {
+          bubble.bursted = true;
+        }
+      })
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+    window.addEventListener("resize", resizeReset);
+    window.addEventListener("mousemove", mousemove);
+    window.addEventListener("mouseout", mouseout);
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
